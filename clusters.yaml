@@ -1,0 +1,7 @@
+- alias: hasura
+  config:
+    configmap: controller-conf
+    namespace: adulteration65-hasura
+  data: null
+  kubeContext: adulteration65
+  name: adulteration65

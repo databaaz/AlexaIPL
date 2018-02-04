@@ -8,10 +8,7 @@ app = Flask(__name__)
 ask = Ask(app, "/")
 
 
-@ask.launch
-def welcome():
-	welcome_msg = render_template('welcome')
-    return question(welcome_msg)
+
 
 
 url = "https://data.adulteration65.hasura-app.io/v1/query"
@@ -93,6 +90,11 @@ teams_mapping = {'rcb':'Royal Challengers Bangalore', 'bangalore':'Royal Challen
 'rajasthan':'Rajasthan Royals', 'rr':'Rajasthan Royals','rajasthan royals':'Rajasthan Royals',
 'delhi':'Delhi Daredevils', 'daredevils':'Delhi Daredevils', 'dd':'Delhi Daredevils','delhi daredevils':'Delhi Daredevils'
 }
+
+@ask.launch
+def welcome():
+	welcome_msg = render_template('welcome')
+	return question(welcome_msg)
 @ask.intent("MatchResult")
 def match_result(teamA,teamB,date_of_match):
 	try:
@@ -124,25 +126,25 @@ def mom(date_of_match):
 	resp = requests.request("POST", url, data=(requestPayload), headers=headers)
 	result = json.loads(resp.content)
 	if len(result)>0:
-		response = 'A total of {} matches took place on {}.'.format(len(result),date_of_match)
+		response = 'A total of {} matches took place on {}.\n'.format(len(result),date_of_match)
 		for i in range(len(result)):
-			response += 'Match {}: {} versus {}. Man of the match was {}.\n'.format((i+1),response[i]["team1"],response[i]["team2"],response[i]["player_of_match"])
+			response += 'Match {}: {} versus {}. Man of the match was {}.\n'.format((i+1),result[i]["team1"],result[i]["team2"],result[i]["player_of_match"])
 	else:
 		response = 'Sorry, Your query did not return any result. Please try again.'
 	return statement(response)	
-	
+
 @ask.intent("MatchSummary")	
 def summarize_match(date_of_match):
-	requestPayload = query_mom.format(date_of_match)
+	requestPayload = query_summary.format(date_of_match)
 	resp = requests.request("POST", url, data=(requestPayload), headers=headers)
 	result = json.loads(resp.content)
 	if len(result)>0:
-		response = 'A total of {} matches took place on {}.'.format(len(result),date_of_match)
+		response = 'A total of {} matches took place on {}.\n'.format(len(result),date_of_match)
 		for i in range(len(result)):
 			if result[i]["win_by_runs"]>0:
-				response += 'Match {}: {} versus {}. The match was played at {},{}. {} won the toss and elected to {} first. {} won the match by {} runs. Man of the match was {}.\n'.format((i+1),response[i]["team1"],response[i]["team2"],response[i]["venue"],response[i]["city"],response[i]["toss_winner"],response[i]["toss_decision"],response[i]["winner"],response[i]["win_by_runs"],response[i]["player_of_match"])
+				response += 'Match {}: {} versus {}. The match was played at {},{}. {} won the toss and elected to {} first. {} won the match by {} runs. Man of the match was {}.\n'.format((i+1),result[i]["team1"],result[i]["team2"],result[i]["venue"],result[i]["city"],result[i]["toss_winner"],result[i]["toss_decision"],result[i]["winner"],result[i]["win_by_runs"],result[i]["player_of_match"])
 			else:
-				response += 'Match {}: {} versus {}. The match was played at {},{}. {} won the toss and elected to {} first. {} won the match by {} wickets. Man of the match was {}.\n'.format((i+1),response[i]["team1"],response[i]["team2"],response[i]["venue"],response[i]["city"],response[i]["toss_winner"],response[i]["toss_decision"],response[i]["winner"],response[i]["win_by_wickets"],response[i]["player_of_match"])
+				response += 'Match {}: {} versus {}. The match was played at {},{}. {} won the toss and elected to {} first. {} won the match by {} wickets. Man of the match was {}.\n'.format((i+1),result[i]["team1"],result[i]["team2"],result[i]["venue"],result[i]["city"],result[i]["toss_winner"],result[i]["toss_decision"],result[i]["winner"],result[i]["win_by_wickets"],result[i]["player_of_match"])
 					
 	else:
 		response = 'Sorry, Your query did not return any result. Please try again.'

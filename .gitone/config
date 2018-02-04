@@ -1,5 +1,0 @@
-[core]
-	bare = false
-[remote "hasura"]
-	url = ssh://hasura@adulteration65.hasura-app.io:2027/~/git/adulteration65
-	fetch = +refs/heads/*:refs/remotes/hasura/*

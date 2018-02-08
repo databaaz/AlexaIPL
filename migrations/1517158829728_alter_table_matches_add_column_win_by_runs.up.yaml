@@ -1,3 +1,0 @@
-- args:
-    sql: ALTER TABLE "matches" ADD COLUMN "win_by_runs" numeric NUll
-  type: run_sql

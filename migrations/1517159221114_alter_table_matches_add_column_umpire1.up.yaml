@@ -1,3 +1,0 @@
-- args:
-    sql: ALTER TABLE "matches" ADD COLUMN "umpire1" text NUll
-  type: run_sql

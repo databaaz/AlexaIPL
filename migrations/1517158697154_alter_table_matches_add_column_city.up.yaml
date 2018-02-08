@@ -1,3 +1,0 @@
-- args:
-    sql: ALTER TABLE "matches" ADD COLUMN "city" text NUll
-  type: run_sql

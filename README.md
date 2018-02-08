@@ -22,13 +22,13 @@ You can test out this skill using an Amazon Echo device or at [Echosim](https://
 
 This skill is written in Python using Flask and the python library [Flask-Ask](https://github.com/johnwheeler/flask-ask). The Implementation is as follows:
 - When you ask a particular kind of query, an appropriate intent from the skill set is invoked and the relevant method with the required parameters is called from the Flask script, which fetches the results from the matches database.
-A response string is generated using fetched data, which is spoken out by Alexa 
+A response string is generated using fetched data, which is spoken out by Alexa  
 - If you Alexa is not able to recognise the spoken words or if there exists no results based on the parameters passed, Alexa will humbly respond and ask you to try again.
 
 
 ## How to get it up and running?
 ### Deployment
-This skill can be deployed on any server that supports HTTPS over SSL.
+This skill can be deployed on any server that supports HTTPS over SSL. 
 For our testing purpose we are using services of Hasura. Hasura automatically generates SSL certificates for you.
 Just run the following commands to deploy your skill.
 
@@ -46,7 +46,7 @@ Now copy the server.py & templates.yaml files stored in microservices/bot/app/sr
 
 To link it with your Amazon Echo Device, go to your [Amazon developer console](https://developer.amazon.com/edw/home.html#/skills).
 
-1. Create a new skill. Call it `IPL Quiz` (or any name you'd like to give). Give the invocation name as `ipl quiz`. Click next.
+1. Create a new skill. Call it `IPL Quiz` (or any name you'd like to give). Give the invocation name as `ipl quiz`. Click next.  
 
 2. Add this intent schema
 ```
@@ -103,11 +103,9 @@ To link it with your Amazon Echo Device, go to your [Amazon developer console](h
         ]
 ```
 
-Create custom slot with the name 'IPL_TEAM', and add all the IPL teams in previous seasons along with their sample utterances
-Add the following sample utterances
+Create custom slot with the name 'IPL_TEAM', and add all the IPL teams of previous seasons along with their sample utterances.  
 
-
-   Click next.
+   Click next.  
 
 **_Note:_** The entire skill setup on Amazon portal can be done easily with the help of a GUI 'Alexa Skill Builder' which is currently present as a Beta version on Amazon Developer portal.
 

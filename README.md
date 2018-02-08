@@ -9,7 +9,7 @@ This is an alexa skill which gives you answers about all the previous IPL matche
 ### Workflow
 You can test out this skill using an Amazon Echo device or at [Echosim](https://echosim.io). The workflow is as follows:
 - You invoke the skill saying "Alexa, start IPL Search."
-- Alexa will say a welcome message and wait for your query.
+- Alexa will speak a welcome message and wait for your query.
 - Currently we have 3 types of queries that can be invoked  
     **1. Match Summary:**  
     		*sample invocation* - `Alexa, ask ipl search to summarize the match on April 9, 2017`  
@@ -21,9 +21,9 @@ You can test out this skill using an Amazon Echo device or at [Echosim](https://
 ### Internal Implementation
 
 This skill is written in Python using Flask and the python library [Flask-Ask](https://github.com/johnwheeler/flask-ask). The Implementation is as follows:
-- When you ask a particular kind of query, an appropriate intent from the skill set is invoked and the relevant method with the required parameters is called from the Flask script, which fetches the results from the matches database.
-A response string is generated using fetched data, which is spoken out by Alexa  
-- If you Alexa is not able to recognise the spoken words or if there exists no results based on the parameters passed, Alexa will humbly respond and ask you to try again.
+- When you make a particular type of query, an appropriate intent from the skill set is invoked and then the relevant method with the required parameters is called from the Flask script, which fetches the results from the matches database.
+A response string is generated using fetched data, which is spoken out by Alexa.  
+- If Alexa is not able to recognise the spoken words or if there exists no results based on the parameters passed, Alexa will humbly respond and ask you to try again.
 
 
 ## How to get it up and running?

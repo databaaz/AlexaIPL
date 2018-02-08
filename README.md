@@ -10,10 +10,16 @@ This is an alexa skill which gives you answers about all the previous IPL matche
 You can test out this skill using an Amazon Echo device or at [Echosim](https://echosim.io). The workflow is as follows:
 - You invoke the skill saying "Alexa, start IPL Search."
 - Alexa will say a welcome message and wait for your query.
-- Currently we have 3 types of queries that can be invoked
-    **1. Match Summary:** *sample invocation* - > Alexa, ask ipl search to summarize the match on April 9, 2017
-    **2. Man of the Match:** *sample invocation* - > Alexa, who was awarded the man of the match on April 9, 2017
-    **3. Match Result:** *sample invocation* - > Alexa, ask ipl search who won the match between Kolkata and Mumbai that took place on April 9, 2017
+- Currently we have 3 types of queries that can be invoked  
+    **1. Match Summary:**  
+    		*sample invocation*  
+		> Alexa, ask ipl search to summarize the match on April 9, 2017  
+    **2. Man of the Match:**  
+    		*sample invocation*  
+		> Alexa, who was awarded the man of the match on April 9, 2017  
+    **3. Match Result:**  
+    		*sample invocation*  
+		> Alexa, ask ipl search who won the match between Kolkata and Mumbai that took place on April 9, 2017
 
 ### Internal Implementation
 

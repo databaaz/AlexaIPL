@@ -13,13 +13,13 @@ You can test out this skill using an Amazon Echo device or at [Echosim](https://
 - Currently we have 3 types of queries that can be invoked  
     **1. Match Summary:**  
     		*sample invocation*  
-		> Alexa, ask ipl search to summarize the match on April 9, 2017  
+		`Alexa, ask ipl search to summarize the match on April 9, 2017`
     **2. Man of the Match:**  
     		*sample invocation*  
-		> Alexa, who was awarded the man of the match on April 9, 2017  
-    **3. Match Result:**  
+		`Alexa, who was awarded the man of the match on April 9, 2017`  
+    **3. Match Result:**
     		*sample invocation*  
-		> Alexa, ask ipl search who won the match between Kolkata and Mumbai that took place on April 9, 2017
+		`Alexa, ask ipl search who won the match between Kolkata and Mumbai that took place on April 9, 2017`
 
 ### Internal Implementation
 

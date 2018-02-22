@@ -21,7 +21,7 @@ You can test out this skill using an Amazon Echo device or at [Echosim](https://
 ### Internal Implementation
 
 This skill is written in Python using Flask and the python library [Flask-Ask](https://github.com/johnwheeler/flask-ask). The Implementation is as follows:
-- When you make a particular type of query, an appropriate intent from the skill set is invoked and then the relevant method with the required parameters is called from the Flask script, which fetches the results from the matches database.
+- When you make a particular type of query, an appropriate intent from the skill set is invoked and then the relevant method mapped to that intent is called from the Flask script, which fetches the results from the matches database.
 A response string is generated using fetched data, which is spoken out by Alexa.  
 - If Alexa is not able to recognise the spoken words or if there exists no results based on the parameters passed, Alexa will humbly respond and ask you to try again.
 
@@ -35,18 +35,17 @@ Just run the following commands to deploy your skill.
 (Make sure you have [hasura-cli](https://docs.hasura.io/0.15/manual/install-hasura-cli.html))
 
 ```
-$ hasura quickstart rishi/alexa-yoda-skill
-$ cd alexa-yoda-skill
+$ hasura quickstart khan185/alexa-ipl-skill
+$ cd alexa-ipl-skill
 $ git add . && git commit -m "Initial Commit"
 $ git push hasura master
 ```
-Now copy the server.py & templates.yaml files stored in microservices/bot/app/src from this repo, and copy it to the same location of the quickstart project you setup on hasura cluster.
 
 ### How to add the skill to your Amazon account?
 
 To link it with your Amazon Echo Device, go to your [Amazon developer console](https://developer.amazon.com/edw/home.html#/skills).
 
-1. Create a new skill. Call it `IPL Quiz` (or any name you'd like to give). Give the invocation name as `ipl quiz`. Click next.  
+1. Create a new skill. Call it `IPL Ask` (or any name you'd like to give). Give the invocation name as `ipl ask`. Click next.  
 
 2. Add this intent schema
 ```
@@ -107,7 +106,7 @@ Create custom slot with the name 'IPL_TEAM', and add all the IPL teams of previo
 
    Click next.  
 
-**_Note:_** The entire skill setup on Amazon portal can be done easily with the help of a GUI 'Alexa Skill Builder' which is currently present as a Beta version on Amazon Developer portal.
+**_Note:_** The entire skill setup on Amazon portal can now be done easily with the help of a GUI 'Alexa Skill Builder' which is currently present as a Beta version on Amazon Developer portal.
 
 3. For the service endpoint, check the `HTTPS` radio button.
 
@@ -119,7 +118,7 @@ Create custom slot with the name 'IPL_TEAM', and add all the IPL teams of previo
 
 	Click next.
 
-5. Your skill is live on the ECHO device associated with your account. Test it by saying **Alexa**, `load IPL Search`. And Alexa will become your Harsha Bhogle :)
+5. Your skill is live on the ECHO device associated with your account. Test it by saying **Alexa**, `start IPL Ask`. And Alexa will become your Harsha Bhogle :)
 
 ## How to use it as a boilerplate?
 

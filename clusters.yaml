@@ -3,5 +3,5 @@
     configmap: controller-conf
     namespace: hasura
   data: null
-  kubeContext: likelihood60
-  name: likelihood60
+  kubeContext: julep91
+  name: julep91

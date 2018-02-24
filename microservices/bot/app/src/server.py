@@ -78,7 +78,42 @@ query_summary='''{{
     }}
 }}
 '''
-
+query_final = '''
+{{
+    "type": "select",
+    "args": {{
+        "table": "ipl_finals",
+        "columns": [
+            "match_id"
+        ],
+        "where": {{
+            "season": {{
+                "$eq": "{}"
+            }}
+            
+        }}
+    }}
+}}
+'''
+query_by_id='''{{
+    "type": "select",
+    "args": {{
+        "table": "matches",
+        "columns": [
+            "team1",
+            "team2",
+            "winner",
+            "win_by_runs",
+            "win_by_wickets"
+        ],
+        "where": {{
+            "id": {{
+                "$eq": "{}"
+            }}
+            
+        }}
+    }}
+}}'''
 
 teams_mapping = {'rcb':'Royal Challengers Bangalore', 'bangalore':'Royal Challengers Bangalore', 'royal challengers bangalore': 'Royal Challengers Bangalore',
 'mi':'Mumbai Indians', 'mumbai':'Mumbai Indians', 'mumbai indians': 'Mumbai Indians',
@@ -91,7 +126,8 @@ teams_mapping = {'rcb':'Royal Challengers Bangalore', 'bangalore':'Royal Challen
 'rajasthan':'Rajasthan Royals', 'rr':'Rajasthan Royals','rajasthan royals':'Rajasthan Royals',
 'delhi':'Delhi Daredevils', 'daredevils':'Delhi Daredevils', 'dd':'Delhi Daredevils','delhi daredevils':'Delhi Daredevils'
 }
-
+seasons={"2008":2008,"1":2008,"2009":2009,"2":2009,"2010":2010,"3":2010,"2011":2011,"4":2011,"2012":2012,"5":2012,"2013":2013,"6":2013,"2014":2014,"7":2014,"2015":2015,
+"8":2015,"2016":2016,"9":2016,"2017":2017,"10":2017}
 @app.route('/')
 def homepage():
     return "Alexa skill is running."
@@ -124,7 +160,7 @@ def match_result(teamA,teamB,date_of_match):
 	else:
 		winner = result[0]['winner']
 		return question('You have queried about the match between {} and team {} that took place on {}. The winner of the match was {}'.format(teamA,teamB,date_of_match, winner))
-	
+
     
 @ask.intent("MOMatch")
 def mom(date_of_match):
@@ -155,7 +191,34 @@ def summarize_match(date_of_match):
 	else:
 		response = 'Sorry, Your query did not return any result. Please try again.'
 	return question(response)
-	
+
+@ask.intent("IPLFinal")
+def ipl_final(season):
+	if season in seasons:
+
+		season = seasons[season]
+		requestPayload = query_final.format(season)
+		resp = requests.request("POST", url, data=(requestPayload), headers=headers)
+		result = json.loads(resp.content)
+		match_id=result[0]["match_id"]
+		requestPayload = query_by_id.format(match_id)
+		resp = requests.request("POST", url, data=(requestPayload), headers=headers)
+		result_final = json.loads(resp.content)
+		team1,team2,winner,win_by_runs,win_by_wickets = result_final[0]["team1"],result_final[0]["team2"],result_final[0]["winner"],result_final[0]["win_by_runs"],result_final[0]["win_by_wickets"]
+		if winner==team1:
+			loser=team2
+		else:
+			loser=team1
+		if win_by_runs>0:
+			response = "{} won the IPL season {}, defeating {} in the final match by {} runs.".format(winner,season,loser,win_by_runs)
+		else:
+			response = "{} won the IPL season {}, defeating {} in the final match by {} wickets.".format(winner,season,loser,win_by_wickets)	
+
+	else:
+		response = 'Sorry, Your query did not return any result. Please try again.'
+	return question(response)	
+
+
 @ask.intent("Exit")
 def exit():
 	return statement("Thank you for using IPL search. Bye !")

@@ -1,4 +1,4 @@
-welcome: Welcome to memory game. I'm going to say three numbers for you to repeat backwards. Ready?
+welcome: Welcome to IPL search. Ask me something about IPL matches from previous seasons. If you want to quit, say quit.
 
 round: Can you repeat the numbers {{ numbers|join(", ") }} backwards?
 

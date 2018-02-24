@@ -12,10 +12,10 @@ ask = Ask(app, "/ipl")
 
 
 
-url = "https://data.likelihood60.hasura-app.io/v1/query"
+url = "https://data.julep91.hasura-app.io/v1/query"
 headers = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer 238662f0f1e1e5d9f3117b7ee899ce8c1b0157c1f0ee1d70"
+    "Authorization": "Bearer db710c4b45facbfb0b422a58888bd7bf7b64781b1cbbfa1e"
 }
 query_match_result = '''{{
     "type": "select",
@@ -123,7 +123,7 @@ def match_result(teamA,teamB,date_of_match):
 			return statement('Sorry I could not find any result for your query. Please try again')
 	else:
 		winner = result[0]['winner']
-		return statement('You have queried about the match between {} and team {} that took place on {}. The winner of the match was {}'.format(teamA,teamB,date_of_match, winner))
+		return question('You have queried about the match between {} and team {} that took place on {}. The winner of the match was {}'.format(teamA,teamB,date_of_match, winner))
 	
     
 @ask.intent("MOMatch")
@@ -137,7 +137,7 @@ def mom(date_of_match):
 			response += 'Match {}: {} versus {}. Man of the match was {}.\n'.format((i+1),result[i]["team1"],result[i]["team2"],result[i]["player_of_match"])
 	else:
 		response = 'Sorry, Your query did not return any result. Please try again.'
-	return statement(response)	
+	return question(response)	
 
 @ask.intent("MatchSummary")	
 def summarize_match(date_of_match):
@@ -154,8 +154,10 @@ def summarize_match(date_of_match):
 					
 	else:
 		response = 'Sorry, Your query did not return any result. Please try again.'
-	return statement(response)
+	return question(response)
 	
-
+@ask.intent("Exit")
+def exit():
+	return statement("Thank you for using IPL search. Bye !")
 
 

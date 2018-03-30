@@ -45,15 +45,138 @@ $ git add . && git commit -m "Initial Commit"
 $ git push hasura master
 ```
 
+### Database Setup  
+
+The `matches` table is already created for you. We need to import data into this table using a csv file.
+The matches csv data has been fetched from [Kaggle](https://www.kaggle.com/manasgarg/ipl/data)  
+1. Download the matches.csv file.  
+2. Import the csv data in your table. For help, [check this](https://stackoverflow.com/questions/47380173/how-do-i-import-a-csv-file-into-my-hasura-postgresql-database)  
+3. There is another table with the name `ipl_finals` having two columns 'season' and 'match_id', where 'match_id' is a foreign key linked to 'id' column in `matches` table. Refer that table and insert data for all the 10 seasons accordingly.  
+
+
 ### How to add the skill to your Amazon account?
 
 To link it with your Amazon Echo Device, go to your [Amazon developer console](https://developer.amazon.com/edw/home.html#/skills).
 
 1. Create a new skill. Call it `IPL Ask` (or any name you'd like to give). Give the invocation name as `ipl ask`. Click next.  
 
-2. Add this intent schema
+2. Go to Skill Builder > Code Editor, and copy the following JSON object
 ```
-"intents": [
+{
+  "languageModel": {
+    "types": [
+      {
+        "name": "IPL_TEAM",
+        "values": [
+          {
+            "id": null,
+            "name": {
+              "value": "Gujarat Lions",
+              "synonyms": [
+                "Gujrat",
+                "Gujarat",
+                "GL"
+              ]
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "Kolkata Knight Riders",
+              "synonyms": [
+                "Kolkata",
+                "KKR",
+                "Knight Riders"
+              ]
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "Mumbai Indians",
+              "synonyms": [
+                "MI",
+                "Mumbai"
+              ]
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "Royal Challengers Bangalore",
+              "synonyms": [
+                "Bangalore",
+                "Bengaluru",
+                "RCB"
+              ]
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "Kings Eleven Punjab",
+              "synonyms": [
+                "Punjab",
+                "KXIP"
+              ]
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "Delhi Daredevils",
+              "synonyms": [
+                "Delhi",
+                "Daredevils",
+                "DD"
+              ]
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "Sunrisers Hyderabad",
+              "synonyms": [
+                "sunrisers",
+                "Hyderabad",
+                "SRH"
+              ]
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "Chennai Super Kings",
+              "synonyms": [
+                "Chennai",
+                "CSK"
+              ]
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "Rajasthan Royals",
+              "synonyms": [
+                "RR",
+                "Rajasthan"
+              ]
+            }
+          },
+          {
+            "id": null,
+            "name": {
+              "value": "Rising Pune Supergiants",
+              "synonyms": [
+                "RPS",
+                "Pune"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "intents": [
       {
         "name": "AMAZON.CancelIntent",
         "samples": []
@@ -74,7 +197,8 @@ To link it with your Amazon Echo Device, go to your [Amazon developer console](h
           "Exit",
           "Close IPL Search",
           "Close",
-          "Shutdown"
+          "Shutdown",
+          "Goodbye"
         ],
         "slots": []
       },
@@ -156,16 +280,64 @@ To link it with your Amazon Echo Device, go to your [Amazon developer console](h
           }
         ]
       }
+    ],
+    "invocationName": "ipl search"
+  },
+  "prompts": [
+    {
+      "id": "Confirm.Intent-Exit",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Are you sure you want to exit IPL search ?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-IPLFinal.IntentSlot-season",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Please mention the season of IPL you're querying about"
+        }
+      ]
+    }
+  ],
+  "dialog": {
+    "intents": [
+      {
+        "name": "Exit",
+        "confirmationRequired": true,
+        "prompts": {
+          "confirmation": "Confirm.Intent-Exit"
+        },
+        "slots": []
+      },
+      {
+        "name": "IPLFinal",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "season",
+            "type": "AMAZON.NUMBER",
+            "elicitationRequired": true,
+            "confirmationRequired": false,
+            "prompts": {
+              "elicitation": "Elicit.Intent-IPLFinal.IntentSlot-season"
+            }
+          }
+        ]
+      }
     ]
-```
+  }
+}
+```  
+This JSON object represents the entire Language Model of the skill, defining intentes and their utterances, custom slots, etc.  
+3. Click on Apply Changes and press the `Build Model` button.  
 
-3. Create custom slot with the name 'IPL_TEAM', and add all the IPL teams of previous seasons along with their sample utterances.  
 
-   Click next.  
-
-**_Note:_** The entire skill setup on Amazon portal can now be done easily with the help of a GUI 'Alexa Skill Builder' which is currently present as a Beta version on Amazon Developer portal.
-
-4. For the service endpoint, check the `HTTPS` radio button.
+4. Under Configuration Section, For the service endpoint, check the `HTTPS` radio button.
 
 	Put the default URL as `https://bot.<cluster-name>.hasura-app.io/ipl`. (Run `$ hasura cluster status` from root directory to know your cluster name).
 
@@ -181,8 +353,3 @@ To link it with your Amazon Echo Device, go to your [Amazon developer console](h
 
 The source code lies in the `microservices/bot/app/src` directory. This is a simple application, so the entire code lies in `server.py`.  
 You might want to go through the Flask-ask docs (a very quick read).    
-
-## Contributors  
-1. Shahbaz Khan ([@shahbazkhan185](https://twitter.com/shahbazkhan185), [fb/khandemic](https://fb.com/khandemic))
-2. Vinit Kadam ([@vinitkadam1997](https://twitter.com/vinitkadam1997))
-
